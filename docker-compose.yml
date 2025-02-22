@@ -1,0 +1,58 @@
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - user-data:/app/data
+    networks:
+      - app-network
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - order-data:/app/data
+    networks:
+      - app-network
+
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    networks:
+      - app-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3004"
+    depends_on:
+      - mailhog
+    networks:
+      - app-network
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI port
+    networks:
+      - app-network
+
+volumes:
+  user-data:
+  order-data:
+
+networks:
+  app-network:
+    driver: bridge
