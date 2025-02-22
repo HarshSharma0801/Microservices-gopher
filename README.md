@@ -28,8 +28,6 @@ Clone the project
 
 Go to the Root
 
-Install dependencies
-
 ```bash
  docker-compose up --build
 ```
